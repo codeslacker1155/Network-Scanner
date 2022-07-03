@@ -8,11 +8,14 @@ from requests.models import Response
 # Get private ip
 hostname = socket.gethostname()
 # Find default gateway ip
-gateway = netifaces.gateways()
-iface=gateway['default'][2][1] # Default network being used to make outside connections
+gateway = netifaces.gateways() #eth0
+iface=gateway['default'][2][1] # Default network interface being used to make outside connections
 intip= gateway['default'][2][0] # Internal private ip of the default network card
 
-# Get puplic ip
+# get the default network interface mac address
+addr=netifaces.ifaddresses(gateway)
+mac=addr[netifaces.AF_LINK][0]['addr']
+# Get public ip
 extip=requests.get('https://api.ipify.org').text
 
 #Call an api to get information on the ipv4 address
@@ -34,10 +37,6 @@ timezone=result['timezone']['name']
 connection_type=result['connection']['connection_type']
 isp_name=result['connection']['isp_name']
 organization_name=result['connection']['organization_name']
-# Scan the local network and identify devices
-arpscan = [re.findall('^[\w\?\.]+|(?<=\s)\([\d\.]+\)|(?<=at\s)[\w\:]+', i) for i in os.popen('arp -a')]
-localscan = [dict(zip(['IP', 'LAN_IP', 'MAC_ADDRESS'], i)) for i in arpscan]
-localscan = [{**i, **{'LAN_IP':i['LAN_IP'][1:-1]}} for i in localscan]
 
 with open('scan.txt','w') as f:
     f.write('Hostname: '+hostname)
@@ -55,9 +54,7 @@ with open('scan.txt','w') as f:
     f.write('\nLongitude: '+str(longit))
     f.write('\n')
     f.write('\nLocal Area Network Scan\n')
-    for i in localscan:
-        ip=i['LAN_IP']
-        mac=i['MAC_ADDRESS']
+    f.write('\nMac Address: '+mac)
         url = "http://macvendors.co/api/vendorname/"
         # Use get method to fetch details
         response = requests.get(url+mac)
