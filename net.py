@@ -61,5 +61,5 @@ with open('scan.txt','w') as f:
     f.write('\n')
     f.write('\nInterface Name: '+iface)
     f.write('\nMac Address: '+mac)
-    f.write('Vendor: '+vendor)
+    f.write('\nVendor: '+vendor)
     
