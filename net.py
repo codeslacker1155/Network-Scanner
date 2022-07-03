@@ -9,8 +9,8 @@ from requests.models import Response
 hostname = socket.gethostname()
 # Find default gateway ip
 gateway = netifaces.gateways()
-iface=gateways['default'][2][1] # Default network being used to make outside connections
-intip= gateways['default'][2][0] # Internal private ip of the default network card
+iface=gateway['default'][2][1] # Default network being used to make outside connections
+intip= gateway['default'][2][0] # Internal private ip of the default network card
 
 # Get puplic ip
 extip=requests.get('https://api.ipify.org').text
