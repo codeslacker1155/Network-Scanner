@@ -15,6 +15,12 @@ intip= gateway['default'][2][0] # Internal private ip of the default network car
 # get the default network interface mac address
 addr=netifaces.ifaddresses(gateway)
 mac=addr[netifaces.AF_LINK][0]['addr']
+
+url = "http://macvendors.co/api/vendorname/"
+# Use get method to fetch details
+response = requests.get(url+mac) #attach query to api url
+vendor = response.content.decode() #resolve for vendor name
+    
 # Get public ip
 extip=requests.get('https://api.ipify.org').text
 
@@ -53,14 +59,7 @@ with open('scan.txt','w') as f:
     f.write('\nLatitude: '+str(lat))
     f.write('\nLongitude: '+str(longit))
     f.write('\n')
-    f.write('\nLocal Area Network Scan\n')
+    f.write('\nInterface Name: '+iface)
     f.write('\nMac Address: '+mac)
-    url = "http://macvendors.co/api/vendorname/"
-    # Use get method to fetch details
-    response = requests.get(url+mac)
-    vendor = response.content.decode()
     f.write('Vendor: '+vendor)
-    if intip.startswith("192.168.68"):
-        if not mac.startswith('ff:ff:ff') and not intip == '192.168.68.1':
-            f.write('IP: '+intip+'       Mac: '+mac+'       Vendor: '+vendor+'\n')
     
