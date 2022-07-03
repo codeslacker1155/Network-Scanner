@@ -13,7 +13,7 @@ iface=gateway['default'][2][1] # Default network interface being used to make ou
 intip= gateway['default'][2][0] # Internal private ip of the default network card
 
 # get the default network interface mac address
-addr=netifaces.ifaddresses(str(gateway))
+addr=netifaces.ifaddresses(str(iface))
 mac=addr[netifaces.AF_LINK][0]['addr']
 
 url = "http://macvendors.co/api/vendorname/"
