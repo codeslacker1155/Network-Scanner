@@ -55,11 +55,12 @@ with open('scan.txt','w') as f:
     f.write('\n')
     f.write('\nLocal Area Network Scan\n')
     f.write('\nMac Address: '+mac)
-        url = "http://macvendors.co/api/vendorname/"
-        # Use get method to fetch details
-        response = requests.get(url+mac)
-        vendor = response.content.decode()
-        if ip.startswith("192.168.68"):
-            if not mac.startswith('ff:ff:ff') and not ip == '192.168.68.1':
-                f.write('IP: '+ip+'       Mac: '+mac+'       Vendor: '+vendor+'\n')
+    url = "http://macvendors.co/api/vendorname/"
+    # Use get method to fetch details
+    response = requests.get(url+mac)
+    vendor = response.content.decode()
+    f.write('Vendor: '+vendor)
+    if intip.startswith("192.168.68"):
+        if not mac.startswith('ff:ff:ff') and not intip == '192.168.68.1':
+            f.write('IP: '+intip+'       Mac: '+mac+'       Vendor: '+vendor+'\n')
     
